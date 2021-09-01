@@ -10,9 +10,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.post("/api/welcome", (req, res) => {
-    res.status(200).send("Welcome 🙌 ");
-});
 app.use('/api/auth', authRouter);
 app.use('/api/core', coreRouter);
 
