@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/rsuardi/ngrx-social-app-api#readme",
   "devDependencies": {
+    "@vercel/node": "^1.12.1",
     "nodemon": "^2.0.12"
   },
   "dependencies": {
