@@ -4,11 +4,11 @@ const auth = require("../../middleware/auth");
 let router = express.Router();
 
 const userRepository = require('../../repository/userRepository');
+const friendRepository = require("../../repository/friendRepository");
 const postRepository = require('../../repository/postRepository');
 const postLikeRepository = require('../../repository/postLikeRepository');
 const commentRepository = require('../../repository/commentRepository');
 const commentLikeRepository = require('../../repository/commentLikeRepository');
-const friendRepository = require("../../repository/friendRepository");
 
 module.exports = [
     //user routes
@@ -45,9 +45,9 @@ module.exports = [
     router.delete("/user/posts/:id/comments/:id", auth, commentRepository.deleteComment),
 
     //comment like routes
-    router.post("/user/posts/:id/comments/:id/likes", auth, commentRepository.like),
-    router.get("/user/posts/:id/comments/:id/likes", auth, commentRepository.getLikes),
-    router.get("/user/posts/:id/comments/:id/likes/:id", auth, commentRepository.getLike),
-    router.put("/user/posts/:id/comments/:id/likes/:id", auth, commentRepository.unlike),
+    router.post("/user/posts/:id/comments/:id/likes", auth, commentLikeRepository.like),
+    router.get("/user/posts/:id/comments/:id/likes", auth, commentLikeRepository.getLikes),
+    router.get("/user/posts/:id/comments/:id/likes/:id", auth, commentLikeRepository.getLike),
+    router.put("/user/posts/:id/comments/:id/likes/:id", auth, commentLikeRepository.unlike),
 
 ]
