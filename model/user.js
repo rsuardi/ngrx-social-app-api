@@ -7,6 +7,14 @@ const userSchema = new mongoose.Schema({
     username: { type: String, unique: true },
     password: { type: String },
     token: { type: String },
-});
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+    friends: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
+}, { timestamps: true });
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("User", userSchema);
