@@ -31,12 +31,11 @@ module.exports = {
                 // save user token
                 user.token = token;
 
-                // user
-                res.status(200).json(user);
+                res.status(200).json({ ...context, message: 'Successfully authenticated', data: { user } });
             }
-            res.status(400).send("Invalid Credentials");
+            res.status(400).send({ ...context, message: 'Invalid credentials' });
         } catch (err) {
-            console.log(err);
+            return res.status(500).send({ ...context, message: error.message });
         }
     },
 }

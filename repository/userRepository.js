@@ -55,19 +55,13 @@ module.exports = {
         }
     },
 
-    getUserPosts: async (req, res) => {
+    getUsers: async (req, res) => {
 
         try {
 
-            const { id } = req.query; // this is the userid
+            const users = await User.find({});
 
-            if (!id) res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
-
-            const user = await User.findById(id).populate('posts');
-
-            if (!user) res.status(400).send({ ...context, message: 'This user does not exists' });
-
-            res.send({ ...context, success: true, message: 'Retrieved successfully', data: { posts: user.posts } });
+            res.send({ ...context, success: true, message: 'Retrieved successfully', data: { users } });
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
@@ -75,6 +69,51 @@ module.exports = {
 
     },
 
+    getUser: async (req, res) => {
 
+        try {
 
+            const { id } = req.query; // this is the userid
+
+            if (!id) res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
+
+            const user = await User.findById(id);
+
+            if (!user) res.status(400).send({ ...context, message: 'This user does not exists' });
+
+            res.send({ ...context, success: true, message: 'Retrieved successfully', data: { user } });
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
+
+    },
+
+    getUserFriends: async (req, res) => {
+
+        try {
+
+            const { id } = req.query; // this is the userid
+
+            if (!id) res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
+
+            const user = await User.findById(id).populate('friends');
+
+            if (!user) res.status(400).send({ ...context, message: 'This user does not exists' });
+
+            res.send({ ...context, success: true, message: 'Retrieved successfully', data: { friends: user.friends } });
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
+
+    },
+
+    partiallyUpdateUser: async (req, res) => {
+
+    },
+
+    deleteUser: async (req, res) => {
+
+    },
 }
