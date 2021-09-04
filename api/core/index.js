@@ -5,7 +5,7 @@ let router = express.Router();
 
 const userRepository = require('../../repository/userRepository');
 const postRepository = require('../../repository/postRepository');
-const postLikeController = require('../../repository/postLikeController');
+const postLikeRepository = require('../../repository/postLikeRepository');
 const commentRepository = require('../../repository/commentRepository');
 const commentLikeRepository = require('../../repository/commentLikeRepository');
 const friendRepository = require("../../repository/friendRepository");
@@ -18,6 +18,12 @@ module.exports = [
     router.patch("/users/:id", auth, userRepository.partiallyUpdateUser),
     router.delete("/users/:id", auth, userRepository.deleteUser),
 
+    //friend routes
+    router.post("/user/friends", auth, friendRepository.create),
+    router.get("/user/friends", auth, friendRepository.getFriends),
+    router.get("/user/friends/:id", auth, friendRepository.getFriend),
+    router.delete("/user/friends/:id", auth, () => friendRepository.deleteFriend),
+
     //post routes
     router.post("/user/posts", auth, postRepository.create),
     router.get("/user/posts", auth, postRepository.getPosts),
@@ -26,30 +32,22 @@ module.exports = [
     router.delete("/user/posts/:id", auth, postRepository.deletePost),
 
     //post like routes
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
+    router.post("/user/posts/:id/likes", auth, postLikeRepository.like),
+    router.get("/user/posts/:id/likes", auth, postLikeRepository.getLikes),
+    router.get("/user/posts/:id/likes/:id", auth, postLikeRepository.getLike),
+    router.put("/user/posts/:id/likes/:id", auth, postLikeRepository.unlike),
 
     //comment routes
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
+    router.post("/user/posts/:id/comments", auth, commentRepository.create),
+    router.get("/user/posts/:id/comments", auth, commentRepository.getComments),
+    router.get("/user/posts/:id/comments/:id", auth, commentRepository.getComment),
+    router.put("/user/posts/:id/comments/:id", auth, commentRepository.partiallyUpdateComment),
+    router.delete("/user/posts/:id/comments/:id", auth, commentRepository.deleteComment),
 
     //comment like routes
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
-    // router.post("/user", auth, () => { }),
+    router.post("/user/posts/:id/comments/:id/likes", auth, commentRepository.like),
+    router.get("/user/posts/:id/comments/:id/likes", auth, commentRepository.getLikes),
+    router.get("/user/posts/:id/comments/:id/likes/:id", auth, commentRepository.getLike),
+    router.put("/user/posts/:id/comments/:id/likes/:id", auth, commentRepository.unlike),
 
-    //friend routes
-    router.post("/user/friends", auth, friendRepository.create),
-    router.get("/user/friends", auth, friendRepository.getFriends),
-    router.get("/user/friends/:id", auth, friendRepository.getFriend),
-    //router.patch("/user/friends/:id", auth, friendRepository.partiallyUpdateFriend),
-    router.delete("/user/friends/:id", auth, () => friendRepository.deleteFriend),
 ]
