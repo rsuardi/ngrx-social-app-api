@@ -1,4 +1,6 @@
 
+let { context } = require('./baseRepository');
+
 module.exports = {
 
     like: async (req, res) => {
@@ -6,7 +8,7 @@ module.exports = {
         try {
 
         } catch (error) {
-
+            return res.status(500).send({ ...context, message: error.message });
         }
     },
 
@@ -16,7 +18,7 @@ module.exports = {
         try {
 
         } catch (error) {
-
+            return res.status(500).send({ ...context, message: error.message });
         }
 
     },
@@ -26,13 +28,18 @@ module.exports = {
         try {
 
         } catch (error) {
-
+            return res.status(500).send({ ...context, message: error.message });
         }
 
     },
 
     unlike: async (req, res) => {
 
+        try {
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
     },
 
 }

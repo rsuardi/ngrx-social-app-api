@@ -1,16 +1,20 @@
+let { context } = require('./baseRepository');
 
 module.exports = {
 
-    create: async (req, res) => {
+    save: async (req, res) => {
+
         try {
 
-        } catch (error) {
 
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
         }
     },
 
 
-    getComments: async (req, res) => {
+    getAll: async (req, res) => {
 
         try {
 
@@ -22,7 +26,7 @@ module.exports = {
 
     },
 
-    getComment: async (req, res) => {
+    get: async (req, res) => {
 
         try {
 
@@ -34,12 +38,26 @@ module.exports = {
 
     },
 
-    partiallyUpdateComment: async (req, res) => {
+    patch: async (req, res) => {
 
+        try {
+
+
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
     },
 
-    deleteComment: async (req, res) => {
+    delete: async (req, res) => {
 
+        try {
+
+
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
     },
 
 }

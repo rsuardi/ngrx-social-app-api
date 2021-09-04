@@ -3,12 +3,12 @@ const jwt = require("jsonwebtoken");
 const User = require('../model/user');
 const Post = require('../model/post');
 const util = require('../util');
+let { context } = require('./baseRepository');
 
-let context = { success: false, message: '', data: null };
 
 module.exports = {
 
-    create: async (req, res) => {
+    save: async (req, res) => {
 
         try {
 
@@ -27,19 +27,47 @@ module.exports = {
         }
     },
 
-    getFriends: async (req, res) => {
+    getAll: async (req, res) => {
 
+        try {
+
+
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
     },
 
-    getFriend: async (req, res) => {
+    get: async (req, res) => {
 
+        try {
+
+
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
     },
 
-    partiallyUpdateFriend: async (req, res) => {
+    patch: async (req, res) => {
 
+        try {
+
+
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
     },
 
-    deleteFriend: async (req, res) => {
+    delete: async (req, res) => {
 
+        try {
+
+
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
     },
 }

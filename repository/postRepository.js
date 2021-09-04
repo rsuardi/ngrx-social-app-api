@@ -1,11 +1,10 @@
 const User = require('../model/user');
 const Post = require('../model/post');
-
-let context = { success: false, message: '', data: null };
+let { context } = require('./baseRepository');
 
 module.exports = {
 
-    create: async (req, res) => {
+    save: async (req, res) => {
 
         try {
 
@@ -38,7 +37,7 @@ module.exports = {
     },
 
 
-    getPost: async (req, res) => {
+    getAll: async (req, res) => {
 
         try {
 
@@ -58,7 +57,7 @@ module.exports = {
 
     },
 
-    getPosts: async (req, res) => {
+    get: async (req, res) => {
 
         try {
 
@@ -78,11 +77,11 @@ module.exports = {
 
     },
 
-    partiallyUpdatePost: async (req, res) => {
+    patch: async (req, res) => {
 
     },
 
-    deletePost: async (req, res) => {
+    delete: async (req, res) => {
 
     },
 }

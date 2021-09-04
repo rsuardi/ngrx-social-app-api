@@ -1,8 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const User = require('../model/user');
-
-let context = { success: false, message: '', data: null };
+let { context } = require('./baseRepository');
 
 module.exports = {
 

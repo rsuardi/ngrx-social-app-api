@@ -3,12 +3,11 @@ const jwt = require("jsonwebtoken");
 const User = require('../model/user');
 const Post = require('../model/post');
 const util = require('../util');
-
-let context = { success: false, message: '', data: null };
+let { context } = require('./baseRepository');
 
 module.exports = {
 
-    create: async (req, res) => {
+    save: async (req, res) => {
 
         try {
 
@@ -55,7 +54,7 @@ module.exports = {
         }
     },
 
-    getUsers: async (req, res) => {
+    getAll: async (req, res) => {
 
         try {
 
@@ -69,7 +68,7 @@ module.exports = {
 
     },
 
-    getUser: async (req, res) => {
+    get: async (req, res) => {
 
         try {
 
@@ -109,11 +108,25 @@ module.exports = {
 
     },
 
-    partiallyUpdateUser: async (req, res) => {
+    patch: async (req, res) => {
 
+        try {
+
+
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
     },
 
-    deleteUser: async (req, res) => {
+    delete: async (req, res) => {
 
+        try {
+
+
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
     },
 }

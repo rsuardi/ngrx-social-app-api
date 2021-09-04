@@ -1,7 +1,8 @@
+let { context } = require('./baseRepository');
 
 module.exports = {
 
-    like: async (req, res) => {
+    save: async (req, res) => {
 
         try {
 
@@ -11,7 +12,7 @@ module.exports = {
     },
 
 
-    getLikes: async (req, res) => {
+    getAll: async (req, res) => {
 
         try {
 
@@ -21,7 +22,7 @@ module.exports = {
 
     },
 
-    getLike: async (req, res) => {
+    get: async (req, res) => {
 
         try {
 
@@ -31,7 +32,7 @@ module.exports = {
 
     },
 
-    unlike: async (req, res) => {
+    delete: async (req, res) => {
 
     },
 
