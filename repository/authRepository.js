@@ -5,6 +5,7 @@ let { context } = require('./baseRepository');
 
 module.exports = {
 
+    //HTTP METHOD USED = POST
     authenticate: async (req, res) => {
         try {
             // Get user input

@@ -2,17 +2,18 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const User = require('../model/user');
 const Post = require('../model/post');
-const util = require('../util');
+const { getMissingProps } = require('../util');
 let { context } = require('./baseRepository');
 
 module.exports = {
 
+    //HTTP METHOD USED = POST
     save: async (req, res) => {
 
         try {
 
             // Validate user input
-            const missingFields = util.getMissingProps(req.body);
+            const missingFields = getMissingProps(req.body);
             if (missingFields) return res.status(400).send({ ...context, message: `Missing fields: ${missingFields}` });
 
             // Get user input
@@ -54,6 +55,7 @@ module.exports = {
         }
     },
 
+    //HTTP METHOD USED = GET
     getAll: async (req, res) => {
 
         try {
@@ -68,6 +70,7 @@ module.exports = {
 
     },
 
+    //HTTP METHOD USED = GET
     get: async (req, res) => {
 
         try {
@@ -88,26 +91,7 @@ module.exports = {
 
     },
 
-    getUserFriends: async (req, res) => {
-
-        try {
-
-            const { id } = req.query; // this is the userid
-
-            if (!id) res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
-
-            const user = await User.findById(id).populate('friends');
-
-            if (!user) res.status(400).send({ ...context, message: 'This user does not exists' });
-
-            res.send({ ...context, success: true, message: 'Retrieved successfully', data: { friends: user.friends } });
-
-        } catch (error) {
-            return res.status(500).send({ ...context, message: error.message });
-        }
-
-    },
-
+    //HTTP METHOD USED = PATCH
     patch: async (req, res) => {
 
         try {
@@ -119,6 +103,7 @@ module.exports = {
         }
     },
 
+    //HTTP METHOD USED = DELETE
     delete: async (req, res) => {
 
         try {

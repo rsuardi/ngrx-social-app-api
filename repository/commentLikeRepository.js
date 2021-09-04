@@ -3,7 +3,8 @@ let { context } = require('./baseRepository');
 
 module.exports = {
 
-    like: async (req, res) => {
+    //HTTP METHOD USED = POST
+    save: async (req, res) => {
 
         try {
 
@@ -12,18 +13,8 @@ module.exports = {
         }
     },
 
-
-    getLikes: async (req, res) => {
-
-        try {
-
-        } catch (error) {
-            return res.status(500).send({ ...context, message: error.message });
-        }
-
-    },
-
-    getLike: async (req, res) => {
+    //HTTP METHOD USED = GET
+    getAll: async (req, res) => {
 
         try {
 
@@ -33,7 +24,19 @@ module.exports = {
 
     },
 
-    unlike: async (req, res) => {
+    //HTTP METHOD USED = GET
+    get: async (req, res) => {
+
+        try {
+
+        } catch (error) {
+            return res.status(500).send({ ...context, message: error.message });
+        }
+
+    },
+
+    //HTTP METHOD USED = DELETE
+    delete: async (req, res) => {
 
         try {
 
