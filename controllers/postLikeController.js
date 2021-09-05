@@ -1,5 +1,5 @@
 const { getMissingProps } = require('../util');
-let { context } = require('./baseRepository');
+let { context } = require('./baseController');
 
 module.exports = {
 
@@ -7,7 +7,7 @@ module.exports = {
     save: async (req, res) => {
 
         try {
-
+            res.status(201).json({});
         } catch (error) {
 
         }
@@ -17,7 +17,7 @@ module.exports = {
     getAll: async (req, res) => {
 
         try {
-
+            res.status(201).json({});
         } catch (error) {
 
         }
@@ -28,7 +28,7 @@ module.exports = {
     get: async (req, res) => {
 
         try {
-
+            res.status(201).json({});
         } catch (error) {
 
         }
@@ -37,7 +37,11 @@ module.exports = {
 
     //HTTP METHOD USED = DELETE
     delete: async (req, res) => {
+        try {
+            res.status(201).json({});
+        } catch (error) {
 
+        }
     },
 
 }

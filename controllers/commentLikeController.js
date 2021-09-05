@@ -1,5 +1,5 @@
 
-let { context } = require('./baseRepository');
+let { context } = require('./baseController');
 
 module.exports = {
 
@@ -8,6 +8,9 @@ module.exports = {
 
         try {
 
+            // const {  } = req.body;
+
+            res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -17,7 +20,7 @@ module.exports = {
     getAll: async (req, res) => {
 
         try {
-
+            res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -28,7 +31,7 @@ module.exports = {
     get: async (req, res) => {
 
         try {
-
+            res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -39,7 +42,7 @@ module.exports = {
     delete: async (req, res) => {
 
         try {
-
+            res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }

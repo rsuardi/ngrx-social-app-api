@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const User = require('../model/user');
-let { context } = require('./baseRepository');
+let { context } = require('./baseController');
 
 module.exports = {
 
@@ -16,7 +16,7 @@ module.exports = {
                 res.status(400).send({ ...context, message: "All input is required" });
             }
             // Validate if user exist in our database
-            const user = await User.findOne({ username });
+            const user = await User.findOne({ username }).select('_id username password email first_name last_name');
 
             if (user && (await bcrypt.compare(password, user.password))) {
                 // Create token

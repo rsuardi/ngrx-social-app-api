@@ -2,10 +2,10 @@ const express = require("express");
 
 let router = express.Router();
 
-const userRepository = require('../../repository/userRepository');
-const authRepository = require('../../repository/authRepository');
+const userController = require('../../controllers/userController');
+const authController = require('../../controllers/authController');
 
-router.post("/register", userRepository.create);
-router.post("/authenticate", authRepository.authenticate);
+router.post("/register", userController.save);
+router.post("/authenticate", authController.authenticate);
 
 module.exports = router;

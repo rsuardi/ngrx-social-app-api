@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require('../model/user');
 const Post = require('../model/post');
 const { getMissingProps } = require('../util');
-let { context } = require('./baseRepository');
+let { context } = require('./baseController');
 
 
 module.exports = {
@@ -59,7 +59,7 @@ module.exports = {
 
         try {
 
-
+            res.status(201).json({});
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
@@ -72,7 +72,7 @@ module.exports = {
         try {
 
 
-
+            res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -83,7 +83,7 @@ module.exports = {
 
         try {
 
-
+            res.status(201).json({});
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
