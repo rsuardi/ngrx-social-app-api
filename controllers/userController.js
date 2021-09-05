@@ -49,9 +49,9 @@ module.exports = {
             user.token = token;
 
             // return new user
-            res.status(201).json({ ...context, message: 'User created successfully', payload: user });
+            return res.status(201).json({ ...context, message: 'User created successfully', payload: user });
         } catch (error) {
-            res.status(500).send({ ...context, message: error.message });
+            return res.status(500).send({ ...context, message: error.message });
         }
     },
 
@@ -81,13 +81,13 @@ module.exports = {
 
             const { userId } = req.params; // this is the userid
 
-            if (!userId) res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
+            if (!userId) return res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
 
             const user = await User.findById(userId);
 
-            if (!user) res.status(400).send({ ...context, message: 'This user does not exists' });
+            if (!user) return res.status(400).send({ ...context, message: 'This user does not exists' });
 
-            res.send({ ...context, success: true, message: 'Retrieved successfully', data: { user } });
+            return res.send({ ...context, success: true, message: 'Retrieved successfully', data: { user } });
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
@@ -100,17 +100,17 @@ module.exports = {
         try {
             const { id: userId } = req.params; // this is the userid
 
-            if (!userId) res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
+            if (!userId) return res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
 
             let user = await User.findById(userId);
 
-            if (!user) res.status(400).send({ ...context, message: 'This user does not exists' });
+            if (!user) return res.status(400).send({ ...context, message: 'This user does not exists' });
 
             const { first_name, last_name, email } = req.body;
 
             if (email) {
                 const isValidEmail = validateEmail(email);
-                if (!isValidEmail) res.status(400).send({ ...context, message: 'This is not a valid email address' });
+                if (!isValidEmail) return res.status(400).send({ ...context, message: 'This is not a valid email address' });
             }
 
             await User.updateOne({ _id: userId })
@@ -122,7 +122,7 @@ module.exports = {
 
             user = await User.findById(userId);
 
-            res.status(200).json({ ...context, message: 'User updated successfully', payload: user });
+            return res.status(200).json({ ...context, message: 'User updated successfully', payload: user });
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -133,8 +133,17 @@ module.exports = {
 
         try {
 
+            const { userId } = req.params;
 
-            res.status(201).json({});
+            if (!userId) return res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
+
+            const user = await User.findById(userId);
+
+            if (!user) return res.status(400).send({ ...context, message: 'This user does not exists' });
+
+            await User.remove({ _id: userId });
+
+            return res.status(201).json({ ...context, success: true, message: 'User deleted successfully' });
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }

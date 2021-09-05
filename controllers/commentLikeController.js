@@ -10,7 +10,7 @@ module.exports = {
 
             // const {  } = req.body;
 
-            res.status(201).json({});
+            return (201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -20,7 +20,7 @@ module.exports = {
     getAll: async (req, res) => {
 
         try {
-            res.status(201).json({});
+            return res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -31,7 +31,7 @@ module.exports = {
     get: async (req, res) => {
 
         try {
-            res.status(201).json({});
+            return res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -42,7 +42,7 @@ module.exports = {
     delete: async (req, res) => {
 
         try {
-            res.status(201).json({});
+            return res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }

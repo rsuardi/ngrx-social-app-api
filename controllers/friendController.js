@@ -15,13 +15,13 @@ module.exports = {
 
             const { id } = req.query; // this is the userid
 
-            if (!id) res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
+            if (!id) return res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
 
             const user = await User.findById(id).populate('friends');
 
-            if (!user) res.status(400).send({ ...context, message: 'This user does not exists' });
+            if (!user) return res.status(400).send({ ...context, message: 'This user does not exists' });
 
-            res.send({ ...context, success: true, message: 'friend added', data: { friends: user.friends } });
+            return res.send({ ...context, success: true, message: 'friend added', data: { friends: user.friends } });
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
@@ -37,13 +37,13 @@ module.exports = {
 
                 const { id } = req.query; // this is the userid
 
-                if (!id) res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
+                if (!id) return res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
 
                 const user = await User.findById(id).populate('friends');
 
-                if (!user) res.status(400).send({ ...context, message: 'This user does not exists' });
+                if (!user) return res.status(400).send({ ...context, message: 'This user does not exists' });
 
-                res.send({ ...context, success: true, message: 'Retrieved successfully', data: { friends: user.friends } });
+                return res.send({ ...context, success: true, message: 'Retrieved successfully', data: { friends: user.friends } });
 
             } catch (error) {
                 return res.status(500).send({ ...context, message: error.message });
@@ -59,7 +59,7 @@ module.exports = {
 
         try {
 
-            res.status(201).json({});
+            return res.status(201).json({});
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
@@ -72,7 +72,7 @@ module.exports = {
         try {
 
 
-            res.status(201).json({});
+            return res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -83,7 +83,7 @@ module.exports = {
 
         try {
 
-            res.status(201).json({});
+            return res.status(201).json({});
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });

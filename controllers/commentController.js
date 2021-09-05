@@ -8,7 +8,7 @@ module.exports = {
         try {
 
 
-            res.status(201).json({});
+            return res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -20,7 +20,7 @@ module.exports = {
         try {
 
 
-            res.status(201).json({});
+            return res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -33,7 +33,7 @@ module.exports = {
         try {
 
 
-            res.status(201).json({});
+            return res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -46,7 +46,7 @@ module.exports = {
         try {
 
 
-            res.status(201).json({});
+            return res.status(201).json({});
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -57,7 +57,7 @@ module.exports = {
 
         try {
 
-            res.status(201).json({});
+            return res.status(201).json({});
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
