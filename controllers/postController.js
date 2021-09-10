@@ -1,7 +1,7 @@
-const User = require('../model/user');
-const Post = require('../model/post');
+const { User, Post } = require('../model');
 const { getMissingProps } = require('../util');
 let { context } = require('./baseController');
+const mongoose = require("mongoose");
 
 module.exports = {
 
@@ -10,30 +10,26 @@ module.exports = {
 
         try {
 
-            const { userId } = req.params; // this is the userid
-
-            if (!userId) return res.status(400).send({ ...context, message: 'You must provide an userid to proceed' });
-
-            const user = await User.findById(userId);
-
-            if (!user) return res.status(400).send({ ...context, message: 'This user does not exists' });
+            const { user_id } = req.user; // this is the userid
 
             const { title, body } = req.body;
 
             const missingFields = getMissingProps({ title, body });
             if (missingFields) return res.status(400).send({ ...context, message: `Missing fields: ${missingFields}` });
 
+            let user = await User.findById(user_id).populate('posts');
+
             const post = await Post.create({
                 title,
                 body,
-                user: userId
+                postedBy: user_id
             });
             await post.save();
 
             user.posts.push(post);
             await user.save();
 
-            return res.status(200).send({ ...context, message: 'Post created succesfully', success: true, data: { userId: userId, post } });
+            return res.status(200).send({ ...context, message: 'Post created succesfully', success: true, payload: { user_id, post } });
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -44,11 +40,9 @@ module.exports = {
 
         try {
 
-            const { userId } = req.params; // this is the postId
+            const { user_id } = req.user; // this is the postId
 
-            if (!userId) return res.status(400).send({ ...context, message: 'You must provide an userId to proceed' });
-
-            const user = await User.findById(userId).populate('posts', 'title body comments likes createdAt updatedAt');
+            const user = await User.findById(user_id).populate('posts', 'title body comments likes createdAt updatedAt');
 
             if (!user) return res.status(400).send({ ...context, message: 'This user does not exists' });
 
@@ -65,17 +59,21 @@ module.exports = {
 
         try {
 
-            const { userId, postId } = req.params; // this is the userid
+            const { postId } = req.params; // this is the userid
 
-            if (!userId) return res.status(400).send({ ...context, message: 'You must provide an userId to proceed' });
+            const { user_id } = req.user; // this is the userid
 
             if (!postId) return res.status(400).send({ ...context, message: 'You must provide an postId to proceed' });
 
-            const user = await User.findById({ '_id': userId, 'posts._id': postId }).select('posts');
+            const relatedUserPost = await User.findById({ '_id': user_id, 'posts._id': postId });
 
-            if (!user) return res.status(400).send({ ...context, message: 'This user does not exists' });
+            if (!relatedUserPost) return res.status(400).send({ ...context, message: 'This post does not belong to this user' });
 
-            return res.send({ ...context, success: true, message: 'Retrieved successfully', payload: { user } });
+            const post = await Post.findById(postId);
+
+            if (!post) return res.status(400).send({ ...context, message: 'This post exists' });
+
+            return res.send({ ...context, success: true, message: 'Retrieved successfully', payload: { post } });
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
@@ -95,7 +93,24 @@ module.exports = {
     //HTTP METHOD USED = DELETE
     delete: async (req, res) => {
         try {
-            return res.status(201).json({});
+
+            const { user_id } = req.user;
+
+            const { postId } = req.params;
+
+            if (!postId) return res.status(400).send({ ...context, message: 'You must provide an postId to proceed' });
+
+            const post = await Post.findById(postId);
+
+            if (!post) return res.status(400).send({ ...context, message: 'This post does not exists' });
+
+            let user = await User.findById({ _id: user_id }).populate('posts');
+            user.posts = user.posts.filter(x => mongoose.Types.ObjectId(x._id) == mongoose.Types.ObjectId(postId));
+            user.save();
+
+            await Post.deleteOne({ _id: mongoose.Types.ObjectId(postId) });
+
+            return res.send({ ...context, success: true, message: 'Post deleted', payload: { deleted_post: post } });
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }

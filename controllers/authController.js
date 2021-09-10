@@ -33,7 +33,7 @@ module.exports = {
                 // save user token
                 user.token = token;
 
-                return res.status(200).send({ ...context, message: 'Successfully authenticated', data: { user } });
+                return res.status(200).send({ ...context, message: 'Successfully authenticated', payload: { user } });
             }
             return res.status(400).send({ ...context, message: 'Invalid credentials' });
         } catch (error) {

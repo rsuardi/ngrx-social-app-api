@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const commentSchema = new mongoose.Schema({
+const Comment = new mongoose.Schema({
     text: { type: String },
     commentedBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -8,12 +8,10 @@ const commentSchema = new mongoose.Schema({
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'CommentLikes'
+        ref: 'Like'
     }],
-    // replies: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Comment'
-    // }]
 }, { timestamps: true });
 
-module.exports = mongoose.model("Comment", commentSchema);
+Comment.add({ replies: [Comment] });
+
+module.exports = mongoose.model("Comment", Comment);

@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
-const User = require('../model/user');
-const Post = require('../model/post');
+const { User, Post } = require('../model');
 const { getMissingProps, validateEmail } = require('../util');
 let { context } = require('./baseController');
 
@@ -87,7 +86,7 @@ module.exports = {
 
             if (!user) return res.status(400).send({ ...context, message: 'This user does not exists' });
 
-            return res.send({ ...context, success: true, message: 'Retrieved successfully', data: { user } });
+            return res.send({ ...context, success: true, message: 'Retrieved successfully', payload: { user } });
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
