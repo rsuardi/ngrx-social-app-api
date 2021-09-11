@@ -31,14 +31,14 @@ module.exports = [
     router.delete("/posts/:postId", auth, PostController.delete),
 
     //like routes
-    router.patch("/likes/:entityId", auth, LikeController.patch),
-    router.get("/likes/:entityId", auth, LikeController.getAll),
+    router.patch("/likes/:entityType/:entityId", auth, LikeController.patch),
+    router.get("/likes/:entityType/:entityId", auth, LikeController.getAll),
 
     //comment routes
-    router.post("/comments/:entityId", auth, CommentController.save),
-    router.get("/comments/:entityId", auth, CommentController.getAll),
-    router.get("/comments/:entityId/:commentId", auth, CommentController.get),
-    router.patch("/comments/:entityId/:commentId", auth, CommentController.patch),
-    router.delete("/comments/:entityId/:commentId", auth, CommentController.delete),
+    router.post("/comments/:entityType/:entityId", auth, CommentController.save),
+    router.get("/comments/:entityType/:entityId", auth, CommentController.getAll),
+    router.get("/comments/:entityType/:entityId/:commentId", auth, CommentController.get),
+    router.patch("/comments/:entityType/:entityId/:commentId", auth, CommentController.patch),
+    router.delete("/comments/:entityType/:entityId/:commentId", auth, CommentController.delete),
 
 ]

@@ -106,7 +106,7 @@ module.exports = {
 
             let user = await User.findById({ _id: user_id }).populate('posts');
             user.posts = user.posts.filter(x => mongoose.Types.ObjectId(x._id) == mongoose.Types.ObjectId(postId));
-            user.save();
+            await user.save();
 
             await Post.deleteOne({ _id: mongoose.Types.ObjectId(postId) });
 

@@ -31,7 +31,7 @@ module.exports = {
 
             user.friends.push(friend);
 
-            user.save();
+            await user.save();
 
             return res.send({ ...context, success: true, message: 'Friend added', payload: { new_friend: friend, user } });
 
