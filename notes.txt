@@ -1,0 +1,31 @@
+**todo ngrx-social-app**
+
+
+*user api
+-sign-in (user might sign-in)
+-sign-out (user might sign-out)
+-sign-up (user might create a new account)
+-get all users (this is more of an admin endpoint or something)
+-get specific user (this is more of an admin endpoint or something)
+-delete user (this is more of an admin endpoint or something)
+-patch user (user might update some profile props, like: first name, last name, etc.)
+
+
+*post api
+-create a post (user can create posts, so friends could see them and add comments to it)
+-get a post (user can select a specific post in order to make some changes for example)
+-get all posts (user can see all his posts, this is for his wall)
+-delete a post (user can delete a post, this might delete all the comments as well)
+-patch a post (user can update post)
+
+*friend api
+-create a friendship (user can add friends)
+-get a friend (user can see friend info)
+-get all friends (user can see all his/her friends)
+-delete friendship (user can remove a friend)
+
+
+*comment api
+-create a comment (user can post a comment for himself or a friend of his/hers)
+-get a comment (user can select a specific comment in order to make some changes for example)
+-get all comments ()
