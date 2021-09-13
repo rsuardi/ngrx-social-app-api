@@ -30,13 +30,13 @@ const User = new mongoose.Schema({
         required: 'Username is required',
 
     },
-    password: { type: String, required: 'Password is required', },
+    password: { type: String },
     token: { type: String },
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
     }],
-}, { timestamps: true });
+}, { timestamps: true, versionKey: false });
 
 User.add({ friends: [User] });
 

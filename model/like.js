@@ -10,6 +10,6 @@ const Like = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         refPath: 'EntityType'
     }
-}, { timestamps: true });
+}, { timestamps: true, versionKey: false });
 
 module.exports = mongoose.model("Like", Like);

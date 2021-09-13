@@ -14,6 +14,6 @@ const Post = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Like'
     }],
-}, { timestamps: true });
+}, { timestamps: true, versionKey: false });
 
 module.exports = mongoose.model("Post", Post);

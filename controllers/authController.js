@@ -18,7 +18,8 @@ module.exports = {
                 return res.status(400).send({ ...context, message: "All input is required" });
             }
             // Validate if user exist in our database
-            const user = await User.findOne({ username }).select('_id username password email first_name last_name');
+            let user = await User.findOne({ username }).select('_id username password email first_name last_name');
+            user = user.toObject();
 
             if (user && (await bcrypt.compare(password, user.password))) {
                 // Create token
@@ -32,8 +33,8 @@ module.exports = {
 
                 // save user token
                 user.token = token;
-
-                return res.status(200).send({ ...context, message: 'Successfully authenticated', payload: { user } });
+                delete user['password'];
+                return res.status(200).send({ ...context, success: true, message: 'Successfully authenticated', payload: { user } });
             }
             return res.status(400).send({ ...context, message: 'Invalid credentials' });
         } catch (error) {

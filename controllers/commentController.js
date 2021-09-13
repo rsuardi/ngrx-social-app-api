@@ -16,24 +16,24 @@ module.exports = {
 
             const { text } = req.body;
 
-            if (!entityType || entityType != 'post' || entityType != 'comment') {
-                return res.status(400).send({ ...context, message: `Missing entityType or incorrect value, you should enter: 'post' or 'comment'` });
-            }
             const missingFields = getMissingProps({ text });
             if (missingFields) return res.status(400).send({ ...context, message: `Missing fields: ${missingFields}` });
 
-            let entity = await (entityType == 'post' ? Post.findById(entityId).populate('comments') : Comment.findById(entityId).populate('replies'));
+            const entity = await (require('../model')[`${entityType}`].findById(entityId).populate(entityType == 'Post' ? 'comments' : 'replies'));
+            if (!entity) return res.status(400).send({ ...context, message: `There's no ${entityType} matching with this value: '${entityId}'` });
 
             const comment = await Comment.create({
                 text,
+                refModel: entityId,
+                model: entityType,
                 commentedBy: user_id
             });
             await comment.save();
 
-            entityType == 'post' ? entity.comments.push(comment) : entity.replies.push(comment);
+            entityType == 'Post' ? entity.comments.push(comment) : entity.replies.push(comment);
             await entity.save();
 
-            return res.status(200).send({ ...context, message: 'Comment posted succesfully', success: true, payload: { user_id, entity_type: entityType, entity_id: entity._id, comment } });
+            return res.status(200).send({ ...context, message: 'Comment posted succesfully', success: true, payload: { userId: user_id, entityType, entityId, comment } });
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -66,36 +66,14 @@ module.exports = {
 
         try {
 
-            // const comments = await User.findOne({ _id: user_id }, { [`${entityType == 'post' ? 'comments' : 'replies'}._id`]: entityId });
             const { entityType, entityId, commentId } = req.params;
 
             const { user_id } = req.user;
 
-            if (!entityType || (entityType != 'post' && entityType != 'comment')) {
-                return res.status(400).send({ ...context, message: `Missing entityType or incorrect value, you should enter: 'post' or 'comment'` });
-            }
+            const relatedComment = await Comment.findOne({ _id: commentId, commentedBy: user_id, refModel: entityId, model: entityType });
+            if (!relatedComment) return res.status(400).send({ ...context, message: `Not matching comment` });
 
-            // const relatedComment = await Post.findOne({ _id: entityId, 'comments._id': commentId });
-            // const relatedComment = await Post.findOne({
-            //     _id: entityId,
-            //     postedBy: user_id
-            // }, {
-            //     "comments": {
-            //         $elemMatch: {
-            //             _id: commentId
-            //         }
-            //     }
-            // });
-
-            const relatedComment = await Post.findById(entityId).and([{ postedBy: user_id }, { 'comments._id': commentId }]).elemMatch('comments', {});
-
-            if (!relatedComment) return res.status(400).send({ ...context, message: `This ${entityType == 'post' ? 'comment' : 'reply'} does not belong to this ${entityType == 'post' ? 'post' : 'comment'}` });
-
-            // const entity = await (entityType == 'post' ? Post.findById(entityId, { postedBy: user_id }, { 'comments._id': commentId }).populate('comments').select('comments') : Comment.findById(entityId, { commentedBy: user_id }).populate('replies').select('replies'));
-
-            const comment = await Comment.findById(commentId);
-
-            return res.status(200).json({ ...context, message: 'Retrieved successfully', payload: { comment } });
+            return res.status(200).json({ ...context, message: 'Retrieved successfully', payload: { relatedComment } });
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -106,9 +84,17 @@ module.exports = {
     patch: async (req, res) => {
 
         try {
+            const { entityType, entityId, commentId } = req.params;
+            const { text } = req.body;
 
+            const missingFields = getMissingProps({ text });
+            if (missingFields) return res.status(400).send({ ...context, message: `Missing fields: ${missingFields}` });
 
-            return res.status(201).json({});
+            let comment = await Comment.findOne({ _id: commentId, commentedBy: user_id, refModel: entityId, model: entityType });
+            await Comment.updateOne({ _id: commentId, commentedBy: user_id, refModel: entityId, model: entityType }, { $set: { text: text || comment.text } });
+
+            comment = await Comment.findOne({ _id: commentId, commentedBy: user_id, refModel: entityId, model: entityType });
+            return res.status(200).json({ ...context, message: 'User updated successfully', payload: { comment } });
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
         }
@@ -119,7 +105,21 @@ module.exports = {
 
         try {
 
-            return res.status(201).json({});
+            const { commentId } = req.params;
+
+            if (!commentId) return res.status(400).send({ ...context, message: 'You must provide an commentId to proceed' });
+
+            const comment = await Comment.findById(commentId);
+
+            if (!comment) return res.status(400).send({ ...context, message: 'This comment does not exists' });
+
+            let user = await Posts.findById({ _id: user_id }).populate('posts');
+            user.posts = user.posts.filter(x => mongoose.Types.ObjectId(x._id) == mongoose.Types.ObjectId(postId));
+            await user.save();
+
+            await Comment.deleteOne(commentId);
+
+            return res.send({ ...context, success: true, message: 'Comment deleted', payload: { deleted_comment: comment } });
 
         } catch (error) {
             return res.status(500).send({ ...context, message: error.message });
